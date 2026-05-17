@@ -1,0 +1,277 @@
+$baseUrl = "http://localhost:8080/ehrbase/rest/openehr/v1"
+$templateId = "ABC_Ambulance_Emergency_Referral_v1"
+
+$headers = @{
+    "Accept"       = "application/json"
+    "Content-Type" = "application/json"
+    "PREFER"       = "return=representation"
+}
+
+try {
+    Write-Host "Step 1: Creating new Patient EHR Space..." -ForegroundColor Cyan
+    $ehrResponse = Invoke-WebRequest -Uri "$baseUrl/ehr" -Method POST -Headers $headers -UseBasicParsing
+    $ehrId = (ConvertFrom-Json $ehrResponse.Content).ehr_id.value
+    Write-Host "🟢 Success! Generated EHR Identifier: $ehrId" -ForegroundColor Green
+
+    $currentTime = (Get-Date -Format "yyyy-MM-ddTHH:mm:ss.fffZ")
+
+    $payloadText = @"
+{
+    "ctx": {
+        "language": "en",
+        "territory": "GB",
+        "composer_name": "Archetype Designer",
+        "time": "$currentTime"
+    },
+    "abc_ambulance_emergency_referral_v1": [
+        {
+            "context": [
+                {
+                    "start_time": [
+                        "$currentTime"
+                    ],
+                    "setting": [
+                        {
+                            "|code": "227",
+                            "|value": "emergency care"
+                        }
+                    ]
+                }
+            ],
+            "working_diagnosis": [
+                {
+                    "problem_diagnosis_name": [
+                        "Acute Myocardial Infarction (STEMI)"
+                    ],
+                    "variant": [
+                        "variant"
+                    ],
+                    "clinical_description": [
+                        "ST-Elevation Myocardial Infarction observed via 12-lead ECG"
+                    ],
+                    "body_site": [
+                        "Myocardium"
+                    ],
+                    "cause": [
+                        "Coronary Artery Occlusion"
+                    ],
+                    "date_time_of_onset": [
+                        "$currentTime"
+                    ],
+                    "date_time_clinically_recognised": [
+                        "$currentTime"
+                    ],
+                    "severity": [
+                        {
+                            "|code": "at0049",
+                            "|other": "Severe"
+                        }
+                    ],
+                    "impact": [
+                        "Critical"
+                    ],
+                    "course_description": [
+                        "Acute presentation"
+                    ],
+                    "date_time_of_resolution": [
+                        "$currentTime"
+                    ],
+                    "diagnostic_certainty": [
+                        {
+                            "|code": "at0075",
+                            "|other": "Confirmed"
+                        }
+                    ],
+                    "comment": [
+                        "comment it is confirmed"
+                    ],
+                    "last_updated": [
+                        "$currentTime"
+                    ]
+                }
+            ],
+            "news2_score": [
+                {
+                    "respiration_rate": [
+                        "at0021"
+                    ],
+                    "spo_scale_1": [
+                        "at0033"
+                    ],
+                    "spo_scale_2": [
+                        "at0061"
+                    ],
+                    "air_or_oxygen": [
+                        "at0037"
+                    ],
+                    "systolic_blood_pressure": [
+                        "at0017"
+                    ],
+                    "pulse": [
+                        "at0010"
+                    ],
+                    "consciousness": [
+                        "at0025"
+                    ],
+                    "temperature": [
+                        "at0066"
+                    ],
+                    "clinical_risk_category": [
+                        {
+                            "|code": "at0060"
+                        }
+                    ],
+                    "time": [
+                        "$currentTime"
+                    ]
+                }
+            ],
+            "referral_intent": [
+                {
+                    "current_activity": [
+                        {
+                            "service_name": [
+                                "HEM"
+                            ],
+                            "service_type": [
+                                "Heli chopter"
+                            ],
+                            "description": [
+                                "ASAP"
+                            ],
+                            "order_detail": [
+                                "order_detail"
+                            ],
+                            "reason_for_request": [
+                                "SEPSIS"
+                            ],
+                            "reason_description": [
+                                "Suspected severe systemic infection with secondary cardiac strain"
+                            ],
+                            "clinical_indication": [
+                                "Hypotension unresponsive to primary fluid resuscitation"
+                            ],
+                            "intent": [
+                                "Urgent extraction"
+                            ],
+                            "urgency": [
+                                {
+                                    "|code": "at0136",
+                                    "|other": "Emergency"
+                                }
+                            ],
+                            "service_due": [
+                                {
+                                    "date_time_value": [
+                                        "$currentTime"
+                                    ],
+                                    "interval_of_date_time_value": [
+                                        {
+                                            "upper": [
+                                                "$currentTime"
+                                            ],
+                                            "lower": [
+                                                "$currentTime"
+                                            ]
+                                        }
+                                    ],
+                                    "text_value": [
+                                        "Immediate arrival required"
+                                    ]
+                                }
+                            ],
+                            "service_period_start": [
+                                "$currentTime"
+                            ],
+                            "service_period_expiry": [
+                                "$currentTime"
+                            ],
+                            "information_description": [
+                                "Patient stable but high acuity risk criteria met"
+                            ],
+                            "comment": [
+                                "Air ambulance crew dispatched"
+                            ],
+                            "timing": [
+                                {
+                                    "|value": "PT0S",
+                                    "|formalism": "timing formalism"
+                                }
+                            ],
+                            "action_archetype_id": [
+                                "openEHR-EHR-ACTION.service_request.v1"
+                            ]
+                        }
+                    ],
+                    "requester_order_identifier": [
+                        {
+                            "text_value": [
+                                "REQ-99482"
+                            ],
+                            "identifier_value": [
+                                {
+                                    "|id": "REQ-99482",
+                                    "|type": "Local Order",
+                                    "|issuer": "Ambulance Dispatch",
+                                    "|assigner": "EMS"
+                                }
+                            ]
+                        }
+                    ],
+                    "receiver_order_identifier": [
+                        {
+                            "text_value": [
+                                "REC-88392"
+                            ],
+                            "identifier_value": [
+                                {
+                                    "|id": "REC-88392",
+                                    "|type": "Triage Log",
+                                    "|issuer": "Base Hospital Receiving Triage",
+                                    "|assigner": "ED"
+                                }
+                            ]
+                        }
+                    ],
+                    "request_status": [
+                        "Active"
+                    ],
+                    "expiry_time": [
+                        "$currentTime"
+                    ],
+                    "narrative": [
+                        "Emergency Critical Helicopter Extraction Intent Logged"
+                    ]
+                }
+            ],
+            "category": [
+                {
+                    "|code": "433"
+                }
+            ]
+        }
+    ]
+}
+"@
+
+    Write-Host "Step 2: Stream-injecting structured payload to validation gateway..." -ForegroundColor Cyan
+    
+    $compositionUrl = "$baseUrl/ehr/$ehrId/composition?templateId=$templateId&format=STRUCTURED"
+    $compResponse = Invoke-WebRequest -Uri $compositionUrl -Method POST -Headers $headers -Body $payloadText -UseBasicParsing
+    
+    if ($compResponse.StatusCode -eq 201 -or $compResponse.StatusCode -eq 200) {
+        $compData = $compResponse.Content | ConvertFrom-Json
+        Write-Host "======================================================================" -ForegroundColor Green
+        Write-Host "🟢 PIPELINE DATA INGESTION SUCCESSFUL!" -ForegroundColor Green
+        Write-Host "Document UID generated by CDR: $($compData.uid.value)" -ForegroundColor Yellow
+        Write-Host "======================================================================" -ForegroundColor Green
+    }
+} catch {
+    Write-Host "`n❌ PIPELINE INGESTION CRASHED" -ForegroundColor Red
+    if ($_.Exception.Response) {
+        $reader = New-Object System.IO.StreamReader($_.Exception.Response.GetResponseStream())
+        Write-Host "Server Fault Analysis: $($reader.ReadToEnd())" -ForegroundColor DarkRed
+    } else {
+        Write-Host "Network Routing Error Message: $($_.Exception.Message)" -ForegroundColor DarkRed
+    }
+}

@@ -1,0 +1,49 @@
+{
+    "ctx": {
+        "language": "en",
+        "territory": "GB",
+        "composer_name": "Archetype Designer",
+        "time": "2026-06-17T18:09:21.000Z"
+    },
+    "abc_ambulance_emergency_referral_v1": [
+        {
+            "context": [
+                {
+                    "start_time": ["2026-06-17T18:09:21.000Z"],
+                    "setting": [
+                        {
+                            "|code": "227",
+                            "|value": "emergency care"
+                        }
+                    ]
+                }
+            ],
+            "working_diagnosis": [
+                {
+                    "problem_diagnosis_name": ["Acute Myocardial Infarction (STEMI)"],
+                    "clinical_description": ["ST-Elevation Myocardial Infarction observed via 12-lead ECG"],
+                    "body_site": ["Myocardium"]
+                }
+            ],
+            "news2_score": [
+                {
+                    "respiration_rate": ["at0021"],
+                    "spo_scale_1": ["at0033"],
+                    "spo_scale_2": ["at0061"],
+                    "air_or_oxygen": ["at0037"],
+                    "systolic_blood_pressure": ["at0017"],
+                    "pulse": ["at0010"],
+                    "consciousness": ["at0025"],
+                    "temperature": ["at0066"],
+                    "clinical_risk_category": [{"|code": "at0060"}],
+                    "time": ["2026-05-17T18:09:21.000Z"]
+                }
+            ],
+            "category": [
+                {
+                    "|code": "433"
+                }
+            ]
+        }
+    ]
+}

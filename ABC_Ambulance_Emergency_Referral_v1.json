@@ -1,0 +1,100 @@
+{
+    "templateId": "ABC_Ambulance_Emergency_Referral_v1",
+    "version": "1.0.0",
+    "defaultLanguage": "en",
+    "languages": ["en"],
+    "tree": {
+        "id": "abc_ambulance_emergency_referral_v1",
+        "name": "ABC Ambulance Emergency Referral",
+        "type": "COMPOSITION",
+        "archetypeId": "openEHR-EHR-COMPOSITION.request.v1",
+        "children": [
+            {
+                "id": "composer",
+                "name": "Composer",
+                "type": "PARTY_PROXY",
+                "min": 1,
+                "max": 1,
+                "localizedName": "Authoring Clinician"
+            },
+            {
+                "id": "context",
+                "type": "EVENT_CONTEXT",
+                "min": 1,
+                "max": 1,
+                "children": [
+                    {
+                        "id": "start_time",
+                        "name": "Start time",
+                        "type": "DV_DATE_TIME",
+                        "min": 1,
+                        "max": 1
+                    },
+                    {
+                        "id": "setting",
+                        "name": "Setting",
+                        "type": "DV_CODED_TEXT",
+                        "min": 1,
+                        "max": 1
+                    }
+                ]
+            },
+            {
+                "id": "working_diagnosis",
+                "name": "Problem/Diagnosis",
+                "type": "EVALUATION",
+                "archetypeId": "openEHR-EHR-EVALUATION.problem_diagnosis.v1",
+                "min": 1,
+                "max": 1,
+                "children": [
+                    {
+                        "id": "problem_diagnosis_name",
+                        "path": "/data[at0001]/items[at0002]",
+                        "name": "Problem/Diagnosis name",
+                        "type": "DV_CODED_TEXT",
+                        "min": 1,
+                        "max": 1,
+                        "localizedName": "Working Diagnosis (*HS SNOMED-CT Bound)"
+                    }
+                ]
+            },
+            {
+                "id": "news2_assessment",
+                "name": "National Early Warning Score (NEWS2)",
+                "type": "OBSERVATION",
+                "archetypeId": "openEHR-EHR-OBSERVATION.news2.v1",
+                "min": 1,
+                "max": 1,
+                "children": [
+                    {
+                        "id": "total_score",
+                        "path": "/data[at0001]/events[at0002]/data[at0003]/items[at0028]",
+                        "name": "Total NEWS2 Score",
+                        "type": "DV_COUNT",
+                        "min": 1,
+                        "max": 1
+                    }
+                ]
+            },
+            {
+                "id": "referral_intent",
+                "name": "Service request",
+                "type": "INSTRUCTION",
+                "archetypeId": "openEHR-EHR-INSTRUCTION.service_request.v1",
+                "min": 1,
+                "max": 1,
+                "children": [
+                    {
+                        "id": "service_name",
+                        "path": "/activities[at0001]/description[at0002]/items[at0011]",
+                        "name": "Service name",
+                        "type": "DV_TEXT",
+                        "min": 1,
+                        "max": 1,
+                        "localizedName": "Target Fast-Track Pathway Service"
+                    }
+                ]
+            }
+        ]
+    }
+}
